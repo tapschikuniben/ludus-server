@@ -1,0 +1,34 @@
+{
+    "name": "ludus",
+    "version": "1.0.0",
+    "description": "ludus backend app",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Tapiwa Ben Chikuni",
+    "license": "ISC",
+    "keywords": [
+        "nodejs",
+        "express",
+        "mongodb",
+        "rest",
+        "api",
+        "jwt",
+        "authentication"
+    ],
+    "dependencies": {
+        "body-parser": "^1.20.1",
+        "cookie-parser": "^1.4.6",
+        "cors": "^2.8.5",
+        "debug": "^4.3.4",
+        "dotenv": "^16.0.3",
+        "express": "^4.18.2",
+        "http-errors": "^2.0.0",
+        "jsonwebtoken": "^9.0.0",
+        "mongoose": "^6.8.2",
+        "mongoose-webhooks": "^1.1.1",
+        "nodemon": "^2.0.20",
+        "pug": "^3.0.2"
+    }
+}
