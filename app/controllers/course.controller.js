@@ -15,15 +15,7 @@ exports.create = (req, res) => {
         course_title: req.body.course_title,
         course_instructor: req.body.course_instructor,
         course_description: req.body.course_description,
-        date: req.body.date,
-        article_or_vedio: req.body.article_or_vedio,
-        tags: req.body.tags,
-        title: req.body.title,
-        description: req.body.description,
-        learning: req.body.learning,
-        preferences: req.body.preferences,
-        points_assigned: req.body.points_assigned,
-        linking_id: req.body.linking_id
+        schedule: req.body.schedule
     });
 
     // Save Course in the database
@@ -86,15 +78,7 @@ exports.update = (req, res) => {
             course_title: req.body.course_title,
             course_instructor: req.body.course_instructor,
             course_description: req.body.course_description,
-            date: req.body.date,
-            article_or_vedio: req.body.article_or_vedio,
-            tags: req.body.tags,
-            title: req.body.title,
-            description: req.body.description,
-            learning: req.body.learning,
-            preferences: req.body.preferences,
-            points_assigned: req.body.points_assigned,
-            linking_id: req.body.linking_id
+            schedule: req.body.schedule
         }, { new: true })
         .then(course => {
             if (!course) {

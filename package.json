@@ -15,7 +15,11 @@
         "rest",
         "api",
         "jwt",
-        "authentication"
+        "authentication",
+        "upload",
+        "download",
+        "file",
+        "multipart"
     ],
     "dependencies": {
         "body-parser": "^1.20.1",
@@ -26,8 +30,10 @@
         "express": "^4.18.2",
         "http-errors": "^2.0.0",
         "jsonwebtoken": "^9.0.0",
-        "mongoose": "^6.8.2",
+        "mongoose": "^6.8.4",
         "mongoose-webhooks": "^1.1.1",
+        "morgan": "^1.10.0",
+        "multer": "^1.4.5-lts.1",
         "nodemon": "^2.0.20",
         "pug": "^3.0.2"
     }
