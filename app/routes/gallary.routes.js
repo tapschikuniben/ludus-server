@@ -40,7 +40,7 @@ module.exports = (app) => {
         if (!req.file) {
             return res.status(500).send({ message: 'Upload fail' });
         } else {
-            req.body.imageUrl = 'http://localhost:3000/uploads/' + req.file.filename;
+            req.body.imageUrl = 'https://18.134.140.238/app/uploads/' + req.file.filename;
             Gallery.create(req.body, function(err, gallery) {
                 if (err) {
                     console.log(err);
