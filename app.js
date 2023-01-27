@@ -56,12 +56,12 @@ app.use(function(err, req, res, next) {
 
 
 require('./app/routes/course.routes.js')(app);
+require('./app/routes/pack.routes.js')(app);
+
 require('./app/routes/course-article.routes.js')(app);
 require('./app/routes/course-day-session.routes')(app);
-
 require('./app/routes/course-image.routes.js')(app);
 require('./app/routes/course-video.routes.js')(app);
-require('./app/routes/gallary.routes.js')(app);
 
 
 mongoose.Promise = global.Promise;
