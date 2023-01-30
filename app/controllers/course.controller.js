@@ -15,7 +15,7 @@ exports.create = (req, res) => {
         course_title: req.body.course_title,
         course_instructor: req.body.course_instructor,
         course_description: req.body.course_description,
-        schedule: req.body.schedule
+        course_daily_sessions: req.body.course_daily_sessions
     });
 
     // Save Course in the database
@@ -78,7 +78,7 @@ exports.update = (req, res) => {
             course_title: req.body.course_title,
             course_instructor: req.body.course_instructor,
             course_description: req.body.course_description,
-            schedule: req.body.schedule
+            course_daily_sessions: req.body.course_daily_sessions
         }, { new: true })
         .then(course => {
             if (!course) {

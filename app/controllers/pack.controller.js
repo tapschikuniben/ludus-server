@@ -15,7 +15,8 @@ exports.create = (req, res) => {
         number_of_weeks: req.body.number_of_weeks,
         pack_title: req.body.pack_title,
         pack_instructor: req.body.pack_instructor,
-        description: req.body.description
+        description: req.body.description,
+        pack_daily_sessions: req.body.pack_daily_sessions
     });
 
     // Save Pack in the database
@@ -78,7 +79,8 @@ exports.update = (req, res) => {
             number_of_weeks: req.body.number_of_weeks,
             pack_title: req.body.pack_title,
             pack_instructor: req.body.pack_instructor,
-            description: req.body.description
+            description: req.body.description,
+            pack_daily_sessions: req.body.pack_daily_sessions
         }, { new: true })
         .then(pack => {
             if (!pack) {

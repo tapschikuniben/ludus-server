@@ -6,6 +6,12 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 var app = express();
 
+
+const aws = require('aws-sdk');
+const multer = require('multer');
+const multerS3 = require('multer-s3');
+
+
 var indexRouter = require('./app/routes/index');
 
 // Configuring port and the database
@@ -58,10 +64,42 @@ app.use(function(err, req, res, next) {
 require('./app/routes/course.routes.js')(app);
 require('./app/routes/pack.routes.js')(app);
 
+
 require('./app/routes/course-article.routes.js')(app);
 require('./app/routes/course-day-session.routes')(app);
 require('./app/routes/course-image.routes.js')(app);
 require('./app/routes/course-video.routes.js')(app);
+
+
+
+
+
+// test code
+
+
+const s3 = new aws.S3({ accessKeyId: "AKIA2RVTJNGONGRD3FOY", secretAccessKey: "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" });
+const upload = multer({
+    storage: multerS3({
+        s3: s3,
+        bucket: "ludus-web-api",
+        metadata: function(req, file, cb) {
+            cb(null, { fieldName: file.fieldname });
+        },
+        key: function(req, file, cb) {
+            cb(null, Date.now().toString())
+        }
+    })
+});
+
+app.post('/upload', upload.single('photos'), function(req, res, next) {
+    res.send({ data: req.files, msg: 'Successfully uploaded ' + req.files + ' files!' })
+});
+
+app.post('/multiple-upload', upload.array('photos', 4), function(req, res, next) {
+    res.send({ data: req.files, msg: 'Successfully uploaded ' + req.files + ' files!' })
+});
+
+// test code end
 
 
 mongoose.Promise = global.Promise;
