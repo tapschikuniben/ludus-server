@@ -1,6 +1,8 @@
 const Course = require('../models/course.model.js');
 
 const Aws = require('aws-sdk');
+const fileSystem = require('fs');
+
 
 const s3 = new Aws.S3({
     accessKeyId: "AKIA2RVTJNGOEBMXXTHX",
@@ -110,20 +112,7 @@ exports.update = (req, res) => {
 // Update a course daily session
 exports.updateCourseDailySession = (req, res) => {
 
-    console.log("xxxxxxxxxxxx", req.files)
-
-
     returnedData = JSON.parse(req.body.course);
-
-    const params = {
-        s3: s3,
-        Bucket: "ludus-web-api", // bucket that we made earlier
-        Key: req.files.courseimage[0].originalname, // Name of the image
-        Body: req.files.courseimage[0].buffer, // Body which will contain the image in buffer format
-        ACL: "public-read-write", // defining the permissions to get the public link
-        ContentType: "image/jpeg" // Necessary to define the image content-type to view the photo in the browser with the link
-    };
-
 
     // Validate Request
     if (!req.body) {
@@ -132,11 +121,45 @@ exports.updateCourseDailySession = (req, res) => {
         });
     }
 
-    s3.upload(params, (error, data) => {
+    const keys = Object.keys(req.files);
 
-        returnedData.course_daily_sessions[returnedData.course_daily_sessions.length - 1].imageUrl = data.Location;
 
-        // Find and update course with the request body
+    Object.values(req.files).forEach(val => {
+        const params = {
+            s3: s3,
+            Bucket: "ludus-web-api", // bucket that we made earlier
+            Key: val[0].originalname, // Name of the image
+            Body: val[0].buffer, // Body which will contain the image in buffer format
+            ACL: "public-read-write", // defining the permissions to get the public link
+            ContentType: val[0].mimetype // Necessary to define the image content-type to view the photo in the browser with the link
+        };
+
+
+        s3.upload(params, (error, data) => {
+            if (val[0].mimetype == "image/jpeg" || val[0].mimetype == "image/jpg") {
+                returnedData.course_daily_sessions[returnedData.course_daily_sessions.length - 1].imageUrl = data.Location;
+                saveCourseSession();
+            }
+
+            if (val[0].mimetype == "video/mp4") {
+                returnedData.course_daily_sessions[returnedData.course_daily_sessions.length - 1].videoUrl = data.Location;
+                saveCourseSession();
+            }
+
+            if (val[0].mimetype == "text/plain") {
+                returnedData.course_daily_sessions[returnedData.course_daily_sessions.length - 1].articleUrl = data.Location;
+                saveCourseSession();
+            }
+
+        })
+    })
+
+
+
+    // let result = await promise;
+
+    // Find and update course with the request body
+    let saveCourseSession = () => {
         Course.findByIdAndUpdate(req.params.courseId, {
                 number_of_days: returnedData.number_of_days,
                 course_title: returnedData.course_title,
@@ -150,7 +173,7 @@ exports.updateCourseDailySession = (req, res) => {
                         message: "Course not found with id " + req.params.courseId
                     });
                 }
-                res.send(course);
+                // res.send(course);
             }).catch(err => {
                 if (err.kind === 'ObjectId') {
                     return res.status(404).send({
@@ -161,7 +184,7 @@ exports.updateCourseDailySession = (req, res) => {
                     message: "Something wrong updating note with id " + req.params.courseId
                 });
             });
-    })
+    }
 
 };
 

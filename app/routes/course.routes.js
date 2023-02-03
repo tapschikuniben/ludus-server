@@ -11,7 +11,7 @@ module.exports = (app) => {
 
 
     const filefilter = (req, file, cb) => {
-        if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg' || file.mimetype === 'video/mp4') {
+        if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/jpg' || file.mimetype === 'video/mp4' || file.mimetype === 'text/plain') {
             cb(null, true)
         } else {
             cb(null, false)
@@ -41,6 +41,9 @@ module.exports = (app) => {
         maxCount: 1
     }, {
         name: 'coursevideo',
+        maxCount: 1
+    }, {
+        name: 'coursearticle',
         maxCount: 1
     }]), courses.updateCourseDailySession);
 
