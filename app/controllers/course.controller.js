@@ -110,6 +110,76 @@ exports.update = (req, res) => {
 };
 
 // Update a course daily session
+exports.updateFile = (req, res) => {
+
+    returnedData = JSON.parse(req.body.course);
+
+    // Validate Request
+    if (!req.body) {
+        return res.status(400).send({
+            message: "Course content can not be empty"
+        });
+    }
+
+    const params = {
+        s3: s3,
+        Bucket: "ludus-web-api", // bucket that we made earlier
+        Key: req.file.originalname, // Name of the image
+        Body: req.file.buffer, // Body which will contain the image in buffer format
+        ACL: "public-read-write", // defining the permissions to get the public link
+        ContentType: "image/jpeg" // Necessary to define the image content-type to view the photo in the browser with the link
+    };
+
+    s3.upload(params, (error, data) => {
+
+        if (req.file.mimetype == "image/jpeg" || req.file.mimetype == "image/jpg") {
+            returnedData.course_daily_sessions[returnedData.course_daily_sessions.length - 1].imageUrl = data.Location;
+
+            saveCourseSession();
+        }
+
+        if (req.file.mimetype == "video/mp4") {
+            returnedData.course_daily_sessions[returnedData.course_daily_sessions.length - 1].videoUrl = data.Location;
+
+            saveCourseSession();
+        }
+
+        if (req.file.mimetype == "text/plain") {
+            returnedData.course_daily_sessions[returnedData.course_daily_sessions.length - 1].articleUrl = data.Location;
+
+            saveCourseSession();
+        }
+
+    })
+
+    // Find and update course with the request body
+    let saveCourseSession = () => {
+        console.log("ssssssssssssss")
+        Course.findByIdAndUpdate(req.params.courseId, {
+                course_daily_sessions: returnedData.course_daily_sessions
+            }, { new: true })
+            .then(course => {
+                if (!course) {
+                    return res.status(404).send({
+                        message: "Course not found with id " + req.params.courseId
+                    });
+                }
+                // res.send(course);
+            }).catch(err => {
+                if (err.kind === 'ObjectId') {
+                    return res.status(404).send({
+                        message: "Course not found with id " + req.params.courseId
+                    });
+                }
+                return res.status(500).send({
+                    message: "Something wrong updating note with id " + req.params.courseId
+                });
+            });
+    }
+
+
+};
+
 exports.updateCourseDailySession = (req, res) => {
 
     returnedData = JSON.parse(req.body.course);
@@ -121,8 +191,11 @@ exports.updateCourseDailySession = (req, res) => {
         });
     }
 
+    console.log("ffffffff", req)
+
     const keys = Object.keys(req.files);
 
+    const length = Object.keys(req.files).length;
 
     Object.values(req.files).forEach(val => {
         const params = {
@@ -154,8 +227,6 @@ exports.updateCourseDailySession = (req, res) => {
         })
     })
 
-
-
     // let result = await promise;
 
     // Find and update course with the request body
@@ -185,6 +256,7 @@ exports.updateCourseDailySession = (req, res) => {
                 });
             });
     }
+
 
 };
 

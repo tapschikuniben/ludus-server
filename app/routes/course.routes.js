@@ -21,6 +21,7 @@ module.exports = (app) => {
     const upload = multer({ storage: storage, fileFilter: filefilter });
 
 
+
     // Create a new Course
     app.post('/api/courses', courses.create);
 
@@ -34,8 +35,13 @@ module.exports = (app) => {
     app.put('/api/courses/:courseId', courses.update);
 
     // Update a Daily Course session with courseId
-    // app.put('/api/courses-daily-session/:courseId', uploadImage.single('courseimage'), uploadVideo.single('coursevideo'), courses.updateCourseDailySession);
+    app.put('/api/courses-file-image/:courseId', upload.single('courseimage'), courses.updateFile);
 
+    app.put('/api/courses-file-video/:courseId', upload.single('coursevideo'), courses.updateFile);
+
+    app.put('/api/courses-file-article/:courseId', upload.single('coursearticle'), courses.updateFile);
+
+    // uploading daily course with files
     app.put('/api/courses-daily-session/:courseId', upload.fields([{
         name: 'courseimage',
         maxCount: 1
