@@ -164,7 +164,8 @@ exports.updateFile = (req, res) => {
                         message: "Course not found with id " + req.params.courseId
                     });
                 }
-                // res.send(course);
+                res.send(course);
+                console.log("course", course)
             }).catch(err => {
                 if (err.kind === 'ObjectId') {
                     return res.status(404).send({
@@ -244,7 +245,7 @@ exports.updateCourseDailySession = (req, res) => {
                         message: "Course not found with id " + req.params.courseId
                     });
                 }
-                // res.send(course);
+                res.send(course);
             }).catch(err => {
                 if (err.kind === 'ObjectId') {
                     return res.status(404).send({
