@@ -42,16 +42,16 @@ module.exports = (app) => {
     app.put('/api/courses-file-article/:courseId', upload.single('coursearticle'), courses.updateFile);
 
     // uploading daily course with files
-    app.put('/api/courses-daily-session/:courseId', upload.fields([{
-        name: 'courseimage',
-        maxCount: 1
-    }, {
-        name: 'coursevideo',
-        maxCount: 1
-    }, {
-        name: 'coursearticle',
-        maxCount: 1
-    }]), courses.updateCourseDailySession);
+    // app.put('/api/courses-daily-session/:courseId', upload.fields([{
+    //     name: 'courseimage',
+    //     maxCount: 1
+    // }, {
+    //     name: 'coursevideo',
+    //     maxCount: 1
+    // }, {
+    //     name: 'coursearticle',
+    //     maxCount: 1
+    // }]), courses.updateCourseDailySession);
 
     // Delete a Course with courseId
     app.delete('/api/courses/:courseId', courses.delete);
