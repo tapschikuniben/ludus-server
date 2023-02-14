@@ -114,6 +114,7 @@ exports.updateFile = (req, res) => {
 
     returnedData = JSON.parse(req.body.course);
 
+
     // Validate Request
     if (!req.body) {
         return res.status(400).send({
@@ -133,7 +134,10 @@ exports.updateFile = (req, res) => {
         };
 
         s3.upload(params, (error, data) => {
+            image_data = JSON.parse(req.body.file_data);
+
             returnedData.course_daily_sessions[returnedData.course_daily_sessions.length - 1].imageUrl = data.Location;
+            returnedData.course_daily_sessions[returnedData.course_daily_sessions.length - 1].imageInfo.push({ imageUrl: data.Location, caption: image_data.caption, title: image_data.title, accessories: image_data.accessories });
             saveCourseSession();
         })
     }
@@ -149,7 +153,10 @@ exports.updateFile = (req, res) => {
         };
 
         s3.upload(params, (error, data) => {
+            video_data = JSON.parse(req.body.file_data);
+
             returnedData.course_daily_sessions[returnedData.course_daily_sessions.length - 1].videoUrl = data.Location;
+            returnedData.course_daily_sessions[returnedData.course_daily_sessions.length - 1].videoInfo.push({ videoUrl: data.Location, caption: video_data.caption, title: video_data.title, accessories: video_data.accessories });
             saveCourseSession();
         })
     }
@@ -165,7 +172,10 @@ exports.updateFile = (req, res) => {
         };
 
         s3.upload(params, (error, data) => {
+            article_data = JSON.parse(req.body.file_data);
+
             returnedData.course_daily_sessions[returnedData.course_daily_sessions.length - 1].articleUrl = data.Location;
+            returnedData.course_daily_sessions[returnedData.course_daily_sessions.length - 1].articleInfo.push({ articleUrl: data.Location, caption: article_data.caption, title: article_data.title, accessories: article_data.accessories });
             saveCourseSession();
         })
     }
