@@ -161,55 +161,6 @@ exports.updateFile = (req, res) => {
         })
     }
 
-    if (req.file.mimetype == "text/plain") {
-        const params = {
-            s3: s3,
-            Bucket: "ludus-web-api", // bucket that we made earlier
-            Key: req.file.originalname, // Name of the image
-            Body: req.file.buffer, // Body which will contain the image in buffer format
-            ACL: "public-read-write", // defining the permissions to get the public link
-            ContentType: "text/plain" // Necessary to define the image content-type to view the photo in the browser with the link
-        };
-
-        s3.upload(params, (error, data) => {
-            article_data = JSON.parse(req.body.file_data);
-
-            returnedData.course_daily_sessions[returnedData.course_daily_sessions.length - 1].articleUrl = data.Location;
-            returnedData.course_daily_sessions[returnedData.course_daily_sessions.length - 1].articleInfo.push({ articleUrl: data.Location, caption: article_data.caption, title: article_data.title, accessories: article_data.accessories });
-            saveCourseSession();
-        })
-    }
-
-    // const params = {
-    //     s3: s3,
-    //     Bucket: "ludus-web-api", // bucket that we made earlier
-    //     Key: req.file.originalname, // Name of the image
-    //     Body: req.file.buffer, // Body which will contain the image in buffer format
-    //     ACL: "public-read-write", // defining the permissions to get the public link
-    //     ContentType: "image/jpeg" // Necessary to define the image content-type to view the photo in the browser with the link
-    // };
-
-
-
-    // s3.upload(params, (error, data) => {
-
-    //     if (req.file.mimetype == "image/jpeg" || req.file.mimetype == "image/jpg") {
-    //         returnedData.course_daily_sessions[returnedData.course_daily_sessions.length - 1].imageUrl = data.Location;
-    //     }
-
-    //     if (req.file.mimetype == "video/mp4") {
-    //         returnedData.course_daily_sessions[returnedData.course_daily_sessions.length - 1].videoUrl = data.Location;
-    //     }
-
-    //     if (req.file.mimetype == "text/plain") {
-    //         returnedData.course_daily_sessions[returnedData.course_daily_sessions.length - 1].articleUrl = data.Location;
-    //     }
-
-    //     saveCourseSession();
-    // })
-
-
-
     // Find and update course with the request body
     let saveCourseSession = () => {
         Course.findByIdAndUpdate(req.params.courseId, {
@@ -274,12 +225,6 @@ exports.updateCourseDailySession = (req, res) => {
                 returnedData.course_daily_sessions[returnedData.course_daily_sessions.length - 1].videoUrl = data.Location;
                 saveCourseSession();
             }
-
-            if (val[0].mimetype == "text/plain") {
-                returnedData.course_daily_sessions[returnedData.course_daily_sessions.length - 1].articleUrl = data.Location;
-                saveCourseSession();
-            }
-
         })
     })
 
