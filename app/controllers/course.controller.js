@@ -136,9 +136,6 @@ exports.updateFile = (req, res) => {
             image_data = JSON.parse(req.body.file_data);
             session_index = req.body.session_index;
 
-            console.log("sssssssssss", session_index)
-
-
             returnedData.course_daily_sessions[session_index].imageInfo.push({ imageUrl: data.Location, caption: image_data.caption, title: image_data.title, accessories: image_data.accessories });
             saveCourseSession();
         })
@@ -158,8 +155,6 @@ exports.updateFile = (req, res) => {
             video_data = JSON.parse(req.body.file_data);
             session_index = req.body.session_index;
 
-            console.log("sssssssssss", session_index)
-
             returnedData.course_daily_sessions[session_index].videoInfo.push({ videoUrl: data.Location, caption: video_data.caption, title: video_data.title, accessories: video_data.accessories });
             saveCourseSession();
         })
@@ -177,7 +172,6 @@ exports.updateFile = (req, res) => {
                     });
                 }
                 res.send(course);
-                console.log("course", course)
             }).catch(err => {
                 if (err.kind === 'ObjectId') {
                     return res.status(404).send({

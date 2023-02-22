@@ -58,6 +58,7 @@ app.use(function(err, req, res, next) {
 
 require('./app/routes/course.routes.js')(app);
 require('./app/routes/pack.routes.js')(app);
+require('./app/routes/user.routes.js')(app);
 
 
 mongoose.Promise = global.Promise;
